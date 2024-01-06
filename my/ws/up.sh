@@ -35,6 +35,7 @@ if [ -e ${FILE_PATH}/country.txt ]; then
   country_abbreviation=$(cat ${FILE_PATH}/country.txt)
 fi
 
+# export VL_URL="vless://${UUID}@${CF_IP}:443?host=${ARGO_DOMAIN}&path=%2F&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#vless-${country_abbreviation}-${SUB_NAME}"
 export VL_URL="vless://${UUID}@${ARGO_DOMAIN}:443?host=${ARGO_DOMAIN}&path=%2F&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#vless-${country_abbreviation}-${SUB_NAME}"
 
 if [ -n "$SUB_URL" ]; then
