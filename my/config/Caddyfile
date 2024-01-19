@@ -2,24 +2,24 @@
 
 # 代理 8001 端口的 Xray
 handle_path /vmess {
-  reverse_proxy localhost:8001 {
-    header_up Host vmess
-    rewrite /(.*) /${VMESS_WSPATH}/$1
-  }
+reverse_proxy localhost:8001 {
+ header_up Host vmess
+ rewrite /(.*) "${VMESS_WSPATH}/$1"  # 修复后的 rewrite 指令
+}
 }
 
 # 代理 8002 端口的 Xray
 handle_path /vless {
-  reverse_proxy localhost:8002 {
-    header_up Host vless
-    rewrite /(.*) /${VLESS_WSPATH}/$1
-  }
+reverse_proxy localhost:8002 {
+ header_up Host vless
+ rewrite /(.*) "${VLESS_WSPATH}/$1"
+}
 }
 
 # 代理其他服务
 handle_path / {
-  reverse_proxy localhost:${PORT}
-  file_server /app {
-    root /index.html
-  }
+reverse_proxy localhost:${PORT}
+file_server /app {
+ root /index.html
+}
 }
