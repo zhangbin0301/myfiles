@@ -12,7 +12,20 @@ log {
   format json
 }
 
-tls_storage /tmp
+{
+  "apps": {
+    "http": {
+      "servers": {
+        "srv0": {
+          # ... 其他配置 ...
+          "tls_storage": {
+            "storage": "/tmp"
+          }
+        }
+      }
+    }
+  }
+}
 
 header {
   X-Robots-Tag none
