@@ -3,13 +3,13 @@
 # 代理 3002 端口的 Xray
 reverse_proxy localhost:3002 {
     header Host vless
-    path /${VLESS_WSPATH}
+    rewrite /(.*) /${VLESS_WSPATH}/$1
 }
 
 # 代理 3003 端口的 Xray
 reverse_proxy localhost:3003 {
     header Host vmess
-    path /${VMESS_WSPATH}
+    rewrite /(.*) /${VMESS_WSPATH}/$1
 }
 
 # 代理其他服务
