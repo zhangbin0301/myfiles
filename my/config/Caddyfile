@@ -4,15 +4,15 @@
 handle_path /${VMESS_WSPATH} {
   reverse_proxy localhost:8001 {
     header_up Host vmess
-    strip_prefix /
+    uri strip_prefix /${VMESS_WSPATH}
   }
 }
 
 # 代理 VLESS 端口
 handle_path /${VLESS_WSPATH} {
-  reverse_proxy localhost:8001 {
+  reverse_proxy localhost:8002 {
     header_up Host vless
-    strip_prefix /
+    uri strip_prefix /${VLESS_WSPATH}
   }
 }
 
