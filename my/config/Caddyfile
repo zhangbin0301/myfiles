@@ -1,8 +1,14 @@
 # tls /path/to/your/certificate.crt /path/to/your/certificate.key
 
 # 代理 Xray
-reverse_proxy /${VLESS_WSPATH} localhost:3002
-reverse_proxy /${VMESS_WSPATH} localhost:3003
+reverse_proxy localhost:3002 {
+  header Host vless
+  path /${VLESS_WSPATH}
+}
+reverse_proxy localhost:3003 {
+  header Host vmess
+  path /${VMESS_WSPATH}
+}
 
 # 代理其他服务
 reverse_proxy localhost:${V_PORT}
@@ -10,7 +16,7 @@ reverse_proxy localhost:${V_PORT}
 # 伪装静态主页
 handle_path / {
     reverse_proxy localhost:${PORT}
-    file_server {
-        root /app
+    file_server /app {
+        path /index.html
     }
 }
