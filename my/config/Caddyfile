@@ -1,4 +1,3 @@
-{
 # tls /path/to/your/certificate.crt /path/to/your/certificate.key
 
 # 代理 Xray
