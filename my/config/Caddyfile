@@ -1,8 +1,10 @@
 :${PORT}
+
 # ssl {
 #   cert /app/ssl/example.com.crt
 #   key /app/ssl/example.com.key
 # }
+
 root * /app/web
 file_server browse
 
