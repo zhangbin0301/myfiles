@@ -1,5 +1,7 @@
+{
+  user www-data
+}
 :${PORT}
-user www-data
 # ssl {
 #   cert /etc/ssl/certs/example.com.crt
 #   key /etc/ssl/private/example.com.key
