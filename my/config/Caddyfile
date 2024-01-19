@@ -2,14 +2,14 @@
 
 # 代理 3002 端口的 Xray
 reverse_proxy localhost:3002 {
-    header Host vless
-    rewrite /(.*) /${VLESS_WSPATH}/$1
+  header Host vless
+  rewrite /(.*) /${VLESS_WSPATH}/$1
 }
 
 # 代理 3003 端口的 Xray
 reverse_proxy localhost:3003 {
-    header Host vmess
-    rewrite /(.*) /${VMESS_WSPATH}/$1
+  header Host vmess
+  rewrite /(.*) /${VMESS_WSPATH}/$1
 }
 
 # 代理其他服务
@@ -17,8 +17,8 @@ reverse_proxy localhost:${V_PORT}
 
 # 伪装静态主页
 handle_path / {
-    reverse_proxy localhost:${PORT}
-    file_server /app {
-        root /index.html
-    }
+  reverse_proxy localhost:${PORT}
+  file_server /app {
+    root /index.html
+  }
 }
