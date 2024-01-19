@@ -11,20 +11,6 @@ file_server browse
 log {
   format json
 }
-{  # 确保大括号紧跟在上一行内容之后
-  "apps": {
-    "http": {
-      "servers": {
-        "srv0": {
-          # ... 其他配置 ...
-          "tls_storage": {
-            "storage": "/tmp"
-          }
-        }
-      }
-    }
-  }
-}
 
 header {
   X-Robots-Tag none
