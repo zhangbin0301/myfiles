@@ -2,6 +2,19 @@
 root * /usr/share/caddy
 file_server browse
 
+log {
+  # 禁用自动保存
+  autosave off
+
+  # 禁用初始配置日志
+  initial_config off
+
+  # 禁用 TLS 清理日志
+  tls_storage {
+    clean_on_stop off
+  }
+}
+
 header {
  X-Robots-Tag none
  X-Content-Type-Options nosniff
