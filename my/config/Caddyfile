@@ -3,7 +3,7 @@
 # 代理 8001 端口的 Xray
 handle_path /vmess {
   reverse_proxy localhost:8001 {
-    header Host vmess
+    header_up Host vmess
     rewrite /(.*) /${VMESS_WSPATH}/$1
   }
 }
@@ -11,7 +11,7 @@ handle_path /vmess {
 # 代理 8002 端口的 Xray
 handle_path /vless {
   reverse_proxy localhost:8002 {
-    header Host vless
+    header_up Host vless
     rewrite /(.*) /${VLESS_WSPATH}/$1
   }
 }
