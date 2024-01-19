@@ -1,3 +1,4 @@
+{
 # tls /path/to/your/certificate.crt /path/to/your/certificate.key
 
 # 代理 Xray
@@ -9,5 +10,6 @@ reverse_proxy localhost:${V_PORT}
 
 # 伪装静态主页
 handle_path / {
-  static /app
+    reverse_proxy localhost:${PORT}
+    root /app
 }
