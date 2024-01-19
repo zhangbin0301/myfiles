@@ -8,10 +8,6 @@
 root * /app/web
 file_server browse
 
-log {
-  format json
-}
-
 header {
   X-Robots-Tag none
   X-Content-Type-Options nosniff
