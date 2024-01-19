@@ -1,23 +1,24 @@
 # tls /path/to/your/certificate.crt /path/to/your/certificate.key
 
 # 代理 8001 端口的 Xray
-reverse_proxy localhost:8001 {
-  header Host vmess
-  rewrite /(.*) /${VMESS_WSPATH}/$1
+handle_path /vmess {
+  reverse_proxy localhost:8001 {
+    header Host vmess
+    rewrite /(.*) /${VMESS_WSPATH}/$1
+  }
 }
 
 # 代理 8002 端口的 Xray
-reverse_proxy localhost:8002 {
-  header Host vless
-  rewrite /(.*) /${VLESS_WSPATH}/$1
+handle_path /vless {
+  reverse_proxy localhost:8002 {
+    header Host vless
+    rewrite /(.*) /${VLESS_WSPATH}/$1
+  }
 }
 
 # 代理其他服务
-reverse_proxy localhost:${V_PORT}
-
-# 伪装静态主页
 handle_path / {
-  reverse_proxy localhost:${PORT}
+  reverse_proxy localhost:${V_PORT}
   file_server /app {
     root /index.html
   }
