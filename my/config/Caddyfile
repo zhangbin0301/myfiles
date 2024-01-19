@@ -1,4 +1,4 @@
-:$PORT
+:${PORT}
 root * /usr/share/caddy
 file_server browse
 
