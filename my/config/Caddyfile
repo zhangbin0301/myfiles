@@ -2,11 +2,11 @@
 
 # 代理 Xray
 reverse_proxy localhost:3002 {
-  header_up Host vless
+  header Host vless
   path /${VLESS_WSPATH}
 }
 reverse_proxy localhost:3003 {
-  header_up Host vmess
+  header Host vmess
   path /${VMESS_WSPATH}
 }
 
