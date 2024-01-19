@@ -12,10 +12,6 @@ log {
   format json
 }
 
-autosave {
-  storage /tmp  # 将存储位置改为 /tmp
-}
-
 tls_storage {
   storage /tmp  # 将存储位置改为 /tmp
 }
