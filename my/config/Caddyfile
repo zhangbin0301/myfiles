@@ -4,7 +4,7 @@
 handle_path /${VMESS_WSPATH} {
   reverse_proxy localhost:8001 {
     header_up Host vmess
-    uri strip_prefix /${VMESS_WSPATH}
+    rewrite /${VMESS_WSPATH}(.*) /$1
   }
 }
 
@@ -12,7 +12,7 @@ handle_path /${VMESS_WSPATH} {
 handle_path /${VLESS_WSPATH} {
   reverse_proxy localhost:8002 {
     header_up Host vless
-    uri strip_prefix /${VLESS_WSPATH}
+    rewrite /${VLESS_WSPATH}(.*) /$1
   }
 }
 
