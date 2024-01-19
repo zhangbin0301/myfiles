@@ -35,6 +35,6 @@ handle_path /app {
 handle / {
   file_server {
    root /app/web
-   index index.html
+   index index.htm index.html
   }
 }
