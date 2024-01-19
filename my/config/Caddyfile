@@ -1,19 +1,19 @@
-{
-  # tls /path/to/your/certificate.crt /path/to/your/certificate.key  # 使用https替换为您的证书和密钥路径
+# tls /path/to/your/certificate.crt /path/to/your/certificate.key
 
-  handle_path /${VLESS_WSPATH} {
-    reverse_proxy localhost:3002
-  }
-  handle_path /${VMESS_WSPATH} {
-    reverse_proxy localhost:3003
-  }
+# 代理 Xray
+reverse_proxy localhost:3002 {
+  header_up Host vless
+  path /${VLESS_WSPATH}
+}
+reverse_proxy localhost:3003 {
+  header_up Host vmess
+  path /${VMESS_WSPATH}
+}
 
-  handle {
-    reverse_proxy localhost:${V_PORT}
-  }
+# 代理其他服务
+reverse_proxy localhost:${V_PORT}
 
-  # 伪装静态主页
-  handle_path / {
-    static /app
-  }
+# 伪装静态主页
+handle_path / {
+  static /app
 }
