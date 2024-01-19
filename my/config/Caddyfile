@@ -1,5 +1,10 @@
 :${PORT}
-root * /usr/share/caddy
+user www-data
+# ssl {
+#   cert /etc/ssl/certs/example.com.crt
+#   key /etc/ssl/private/example.com.key
+# }
+root * /app/web
 file_server browse
 
 log {
@@ -16,32 +21,32 @@ log {
 }
 
 header {
- X-Robots-Tag none
- X-Content-Type-Options nosniff
- X-Frame-Options DENY
- Referrer-Policy no-referrer-when-downgrade
+  X-Robots-Tag none
+  X-Content-Type-Options nosniff
+  X-Frame-Options DENY
+  Referrer-Policy no-referrer-when-downgrade
 }
 
 @websocket_xray {
- header Connection *Upgrade*
- header Upgrade websocket
- path /${VMESS_WSPATH}|/${VLESS_WSPATH}
+  header Connection *Upgrade*
+  header Upgrade websocket
+  path /${VMESS_WSPATH}|/${VLESS_WSPATH}
 }
 reverse_proxy @websocket_xray localhost:${V_PORT} {
- header_up Host ${config.json.inbounds[0].id}
+  header_up Host ${config.json.inbounds[0].id}
 }
 
 # 代理其他服务
 handle_path /app {
- file_server {
-  root /
- }
+  file_server {
+   root /
+  }
 }
 
 # 主页
 handle / {
- file_server {
-  root /app
-  index index.html
- }
+  file_server {
+   root /app/web
+   index index.html
+  }
 }
