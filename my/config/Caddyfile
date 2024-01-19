@@ -18,7 +18,7 @@ handle_path /vless {
 
 # 代理其他服务
 handle_path / {
-  reverse_proxy localhost:${V_PORT}
+  reverse_proxy localhost:${PORT}
   file_server /app {
     root /index.html
   }
