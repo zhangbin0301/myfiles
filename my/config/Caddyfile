@@ -1,11 +1,7 @@
-{
-  user www-data
-}
-
 :${PORT}
 # ssl {
-#   cert /etc/ssl/certs/example.com.crt
-#   key /etc/ssl/private/example.com.key
+#   cert /app/ssl/example.com.crt
+#   key /app/ssl/example.com.key
 # }
 root * /app/web
 file_server browse
