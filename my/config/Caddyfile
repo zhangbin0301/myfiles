@@ -1,4 +1,4 @@
-:${PORT}
+:$PORT
 root * /usr/share/caddy
 file_server browse
 
@@ -23,3 +23,12 @@ handle_path /app {
  file_server {
   root /
  }
+}
+
+# 主页
+handle / {
+ file_server {
+  root /app
+  index index.html
+ }
+}
