@@ -1,30 +1,25 @@
-# tls /path/to/your/certificate.crt /path/to/your/certificate.key
+:$PORT
+root * /usr/share/caddy
+file_server browse
 
-# 代理 VMess 端口
-handle_path /${VMESS_WSPATH} {
-  reverse_proxy localhost:8001 {
-    header_up Host vmess
-    proxy_websocket
-  }
+header {
+ X-Robots-Tag none
+ X-Content-Type-Options nosniff
+ X-Frame-Options DENY
+ Referrer-Policy no-referrer-when-downgrade
 }
 
-# 代理 VLESS 端口
-handle_path /${VLESS_WSPATH} {
-  reverse_proxy localhost:8002 {
-    header_up Host vless
-    proxy_websocket
-  }
+@websocket_xray {
+ header Connection *Upgrade*
+ header Upgrade websocket
+ path /${VMESS_WSPATH}|/${VLESS_WSPATH}
 }
-
-# 代理其他所有流量
-handle {
-  reverse_proxy localhost:${V_PORT}
+reverse_proxy @websocket_xray localhost:${V_PORT} {
+ header_up Host ${config.json.inbounds[0].id}
 }
 
 # 代理其他服务
-handle_path / {
-  reverse_proxy localhost:${PORT}
-  file_server /app {
-    root /index.html
-  }
-}
+handle_path /app {
+ file_server {
+  root /
+ }
