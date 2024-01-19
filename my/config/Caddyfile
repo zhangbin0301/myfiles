@@ -1,18 +1,16 @@
 # tls /path/to/your/certificate.crt /path/to/your/certificate.key
 
 # 代理 VMess 端口
-handle_path /${VMESS_WSPATH} {
+handle_websocket /${VMESS_WSPATH} {
   reverse_proxy localhost:8001 {
     header_up Host vmess
-    rewrite /${VMESS_WSPATH}(.*) /$1
   }
 }
 
 # 代理 VLESS 端口
-handle_path /${VLESS_WSPATH} {
+handle_websocket /${VLESS_WSPATH} {
   reverse_proxy localhost:8002 {
     header_up Host vless
-    rewrite /${VLESS_WSPATH}(.*) /$1
   }
 }
 
