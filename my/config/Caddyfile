@@ -4,7 +4,7 @@
 handle_path /vmess {
   reverse_proxy localhost:8001 {
     header_up Host vmess
-    rewrite /(.*) "/${VMESS_WSPATH}/$1"  # 修复后的 rewrite 指令
+    url_rewrite / ${VLESS_WSPATH}
   }
 }
 
@@ -12,7 +12,7 @@ handle_path /vmess {
 handle_path /vless {
   reverse_proxy localhost:8002 {
     header_up Host vless
-    rewrite /(.*) "/${VLESS_WSPATH}/$1"
+    url_rewrite / ${VLESS_WSPATH}
   }
 }
 
