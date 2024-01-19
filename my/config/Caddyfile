@@ -11,5 +11,8 @@ reverse_proxy localhost:${V_PORT}
 # 伪装静态主页
 handle_path / {
     reverse_proxy localhost:${PORT}
-    root /app
+    static /app {
+        path /index.html
+        path *.html
+    }
 }
