@@ -1,0 +1,20 @@
+{
+  tls /path/to/your/certificate.crt /path/to/your/certificate.key  # 替换为您的证书和密钥路径
+  encode gzip
+
+  handle_path /${VLESS_WSPATH} {  # 替换为实际的 VLESS 路径
+    reverse_proxy localhost:3002
+  }
+  handle_path /${VMESS_WSPATH} {  # 替换为实际的 VMess 路径
+    reverse_proxy localhost:3003
+  }
+
+  handle {
+    reverse_proxy localhost:${V_PORT}
+  }
+
+  # 伪装静态主页
+  handle_path / {
+    static /app
+  }
+}
