@@ -1,13 +1,15 @@
 # tls /path/to/your/certificate.crt /path/to/your/certificate.key
 
-# 代理 Xray
+# 代理 3002 端口的 Xray
 reverse_proxy localhost:3002 {
-  header Host vless
-  root /${VLESS_WSPATH}
+    header Host vless
+    path /${VLESS_WSPATH}
 }
+
+# 代理 3003 端口的 Xray
 reverse_proxy localhost:3003 {
-  header Host vmess
-  root /${VMESS_WSPATH}
+    header Host vmess
+    path /${VMESS_WSPATH}
 }
 
 # 代理其他服务
