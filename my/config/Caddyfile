@@ -22,6 +22,7 @@ header {
 }
 reverse_proxy @websocket_xray localhost:${V_PORT} {
   header_up Host ${config.json.inbounds[0].id}
+  transport http
 }
 
 # 代理其他服务
