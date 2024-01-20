@@ -1,4 +1,4 @@
-:${PORT} {
+:${V_PORT} {
   # Uncomment the following block and provide SSL certificate and key paths
   # ssl {
   #   cert /etc/ssl/certs/example.com.crt
