@@ -26,13 +26,6 @@
     path /${VMESS_WSPATH}|/${VLESS_WSPATH}
   }
 
-  # Serve files from the /app directory
-  handle /app/* {
-    file_server {
-      root /
-    }
-  }
-
   # Serve the main homepage
   handle / {
     file_server {
@@ -44,7 +37,7 @@
   # /sub
   handle /sub {
     file_server {
-      root * ${FILE_PATH}
+      root ${FILE_PATH}
       file sub.txt
     }
   }
