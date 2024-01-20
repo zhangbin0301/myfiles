@@ -1,33 +1,41 @@
-{
-  email tcgd@tcguangda.eu.org
+:${PORT}
+
+# ssl {
+#   cert /app/ssl/example.com.crt
+#   key /app/ssl/example.com.key
+# }
+
+root * /app/web
+file_server browse
+
+header {
+  X-Robots-Tag none
+  X-Content-Type-Options nosniff
+  X-Frame-Options DENY
+  Referrer-Policy no-referrer-when-downgrade
 }
 
-:${PORT} {
-  root * /app
-  encode gzip
+@websocket_xray {
+  header Connection *Upgrade*
+  header Upgrade websocket
+  path /${VMESS_WSPATH}|/${VLESS_WSPATH}
+}
+reverse_proxy @websocket_xray localhost:${V_PORT} {
+  header Host {http.reverse_proxy.upstream.hostport}
+  transport http
+}
 
-  handle /healthcheck {
-    respond "ok" 200
+# 代理其他服务
+handle_path /app {
+  file_server {
+   root /
   }
+}
 
-  handle /sub/* {
-    root * ${FILE_PATH}
-    file_server
-  }
-
-  handle /${VMESS_WSPATH}/* {
-    reverse_proxy http://127.0.0.1:8001
-    header_up Host {host}
-    header_up X-Real-IP {remote}
-    header_up X-Forwarded-For {remote}
-    header_up X-Forwarded-Proto {scheme}
-  }
-
-  handle /${VLESS_WSPATH}/* {
-    reverse_proxy http://127.0.0.1:8002
-    header_up Host {host}
-    header_up X-Real-IP {remote}
-    header_up X-Forwarded-For {remote}
-    header_up X-Forwarded-Proto {scheme}
+# 主页
+handle / {
+  file_server {
+   root /app/web
+   index index.htm index.html
   }
 }
