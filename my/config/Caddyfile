@@ -33,12 +33,4 @@
       index index.html
     }
   }
-
-  # /sub
-  handle /sub {
-    file_server {
-      root ${FILE_PATH}
-      file sub.txt
-    }
-  }
 }
