@@ -1,34 +1,12 @@
 :${PORT} {
   root * /app/web
-  file_server {
-    index index.html
-  }
-
-  log {
-    format json
-    level debug
-  }
-
-  header {
-    X-Robots-Tag none
-    X-Content-Type-Options nosniff
-    X-Frame-Options DENY
-    Referrer-Policy no-referrer-when-downgrade
-  }
+  file_server browse
 
   # Serve the main homepage
   handle / {
     file_server {
       root /app/web
       index index.html
-    }
-  }
-
-  # Serve a directory listing of /app/web
-  handle /files {
-    file_server {
-      root /app/web
-      browse
     }
   }
 }
