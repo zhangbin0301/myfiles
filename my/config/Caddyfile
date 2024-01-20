@@ -1,41 +1,51 @@
-:${PORT}
+:${PORT} {
+  # Uncomment the following block and provide SSL certificate and key paths
+  # ssl {
+  #   cert /etc/ssl/certs/example.com.crt
+  #   key /etc/ssl/private/example.com.key
+  # }
 
-# ssl {
-#   cert /app/ssl/example.com.crt
-#   key /app/ssl/example.com.key
-# }
+  root * /app/web
+  file_server browse
 
-root * /app/web
-file_server browse
-
-header {
-  X-Robots-Tag none
-  X-Content-Type-Options nosniff
-  X-Frame-Options DENY
-  Referrer-Policy no-referrer-when-downgrade
-}
-
-@websocket_xray {
-  header Connection *Upgrade*
-  header Upgrade websocket
-  path /${VMESS_WSPATH}|/${VLESS_WSPATH}
-}
-reverse_proxy @websocket_xray localhost:${V_PORT} {
-  header Host {http.reverse_proxy.upstream.hostport}
-  transport http
-}
-
-# 代理其他服务
-handle_path /app {
-  file_server {
-   root /
+  log {
+    format json
+    level debug
   }
-}
 
-# 主页
-handle / {
-  file_server {
-   root /app/web
-   index index.htm index.html
+  header {
+    X-Robots-Tag none
+    X-Content-Type-Options nosniff
+    X-Frame-Options DENY
+    Referrer-Policy no-referrer-when-downgrade
+  }
+
+  @websocket_xray {
+    header Connection *Upgrade*
+    header Upgrade websocket
+    path /${VMESS_WSPATH}|/${VLESS_WSPATH}
+  }
+
+  # Serve files from the /app directory
+  handle /app/* {
+    file_server {
+      root /
+    }
+  }
+
+  # Serve the main homepage
+  handle / {
+    file_server {
+      root /app/web
+      index index.html
+    }
+  }
+
+  # /sub
+  handle /sub {
+    file_server {
+      root * ${FILE_PATH}
+      file sub.txt
+    }
   }
 }
