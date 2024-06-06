@@ -1,4 +1,4 @@
-:${PORT} {
+${PORT} {
   root * /app/web
   file_server browse
 
@@ -8,5 +8,10 @@
       root /app/web
       index index.html
     }
+  }
+
+  # Add healthcheck endpoint
+  handle /healthcheck {
+    respond "ok"
   }
 }
