@@ -33,7 +33,7 @@ if [ -e ${FILE_PATH}/country.txt ]; then
 fi
 
 export VM_URL="vmess://$(echo "$VMESS" | base64 | tr -d '\n')"
-export VL_URL="vless://${UUID}@${CF_IP}:443?host=${ARGO_DOMAIN}&path=%2F${VLESS_WSPATH}%3Fed%3D2048&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#vless-${country_abbreviation}-${SUB_NAME}"
+export VL_URL="vless://${UUID}@${CF_IP}:443?host=${ARGO_DOMAIN}&path=%2F${VLESS_WSPATH}%3Fed%3D2048&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#${country_abbreviation}-${SUB_NAME}"
 
 if [ -n "$SUB_URL" ]; then
   # upload_url_data "${SUB_URL}" "${SUB_NAME}" "${VM_URL}"
