@@ -6,7 +6,7 @@ if source ${FILE_PATH}/env_vars.sh; then
 
 while true
 do
-# 上传订阅
+# up
 upload_url_data() {
     if [ $# -lt 3 ]; then
         return 1
@@ -40,6 +40,26 @@ export VL_URL="vless://${UUID}@${CF_IP}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2F${
 # upload_url_data "${SUB_URL}" "${SUB_NAME}" "${VM_URL}"
 upload_url_data "${SUB_URL}" "${SUB_NAME}" "${VL_URL}"
 # echo "upload ok!"
+
+  if [ -e ${FILE_PATH}/argo ]; then
+    [[ $(pidof argo) ]] && exit
+    systemctl start argo
+  fi
+
+  if [ -e ${FILE_PATH}/web ]; then
+    [[ $(pidof web) ]] && exit
+    systemctl start web
+  fi
+
+  if [ -n "${NEZHA_SERVER}" ] && [ -n "${NEZHA_KEY}" ] && [ -e ${FILE_PATH}/nezha-agent ]; then
+    [[ $(pidof nezha-agent) ]] && exit
+    systemctl start nezha-agent
+  fi
+
+  if [ -e ${FILE_PATH}/up.sh ]; then
+    [[ $(pidof up.sh) ]] && exit
+    systemctl start upload
+  fi
 
 sleep 300
 done
