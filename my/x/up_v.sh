@@ -65,7 +65,7 @@ upload_url_data "${SUB_URL}" "${SUB_NAME}" "${VL_URL}"
     fi
   fi
 
-  if [ -e ${FILE_PATH}/up.sh ]; then
+  if [ -n "$SUB_URL" ] && [ -e ${FILE_PATH}/up.sh ]; then
     if [[ $(pidof up.sh) ]]; then
       exit
     else
