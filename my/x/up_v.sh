@@ -42,33 +42,25 @@ upload_url_data "${SUB_URL}" "${SUB_NAME}" "${VL_URL}"
 # echo "upload ok!"
 
   if [ -e ${FILE_PATH}/argo ]; then
-    if ps aux | grep -q argo; then
-      exit
-    else
+    if ! pgrep -f argo > /dev/null; then
       systemctl start argo
     fi
   fi
 
   if [ -e ${FILE_PATH}/web ]; then
-    if ps aux | grep -q web; then
-      exit
-    else
+    if ! pgrep -f web > /dev/null; then
       systemctl start web
     fi
   fi
 
   if [ -n "${NEZHA_SERVER}" ] && [ -n "${NEZHA_KEY}" ] && [ -e ${FILE_PATH}/nezha-agent ]; then
-    if ps aux | grep -q nezha-agent; then
-      exit
-    else
+    if ! pgrep -f nezha-agent > /dev/null; then
       systemctl start nezha-agent
     fi
   fi
 
   if [ -n "$SUB_URL" ] && [ -e ${FILE_PATH}/up.sh ]; then
-    if ps aux | grep -q up.sh; then
-      exit
-    else
+    if ! pgrep -f up.sh > /dev/null; then
       systemctl start upload
     fi
   fi
