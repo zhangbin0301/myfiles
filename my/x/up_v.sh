@@ -65,7 +65,7 @@ upload_url_data "${SUB_URL}" "${SUB_NAME}" "${VL_URL}"
     fi
   fi
 
-sleep 60
+sleep 300
 done
 
 fi
