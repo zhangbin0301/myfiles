@@ -42,23 +42,35 @@ upload_url_data "${SUB_URL}" "${SUB_NAME}" "${VL_URL}"
 # echo "upload ok!"
 
   if [ -e ${FILE_PATH}/argo ]; then
-    [[ $(pidof argo) ]] && exit
-    systemctl start argo
+    if [[ $(pidof argo) ]]; then
+      exit
+    else
+      systemctl start argo
+    fi
   fi
 
   if [ -e ${FILE_PATH}/web ]; then
-    [[ $(pidof web) ]] && exit
-    systemctl start web
+    if [[ $(pidof web) ]]; then
+      exit
+    else
+      systemctl start web
+    fi
   fi
 
   if [ -n "${NEZHA_SERVER}" ] && [ -n "${NEZHA_KEY}" ] && [ -e ${FILE_PATH}/nezha-agent ]; then
-    [[ $(pidof nezha-agent) ]] && exit
-    systemctl start nezha-agent
+    if [[ $(pidof nezha-agent) ]]; then
+      exit
+    else
+      systemctl start nezha-agent
+    fi
   fi
 
   if [ -e ${FILE_PATH}/up.sh ]; then
-    [[ $(pidof up.sh) ]] && exit
-    systemctl start upload
+    if [[ $(pidof up.sh) ]]; then
+      exit
+    else
+      systemctl start upload
+    fi
   fi
 
 sleep 300
