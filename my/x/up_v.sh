@@ -59,12 +59,6 @@ upload_url_data "${SUB_URL}" "${SUB_NAME}" "${VL_URL}"
     fi
   fi
 
-  if [ -n "$SUB_URL" ] && [ -e ${FILE_PATH}/up.sh ]; then
-    if ! pgrep -f up.sh > /dev/null; then
-      systemctl start upload
-    fi
-  fi
-
 sleep 300
 done
 
