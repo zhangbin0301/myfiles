@@ -38,6 +38,7 @@ export VL_URL="vless://${UUID}@${CF_IP}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2F${
 # upload_url_data "${SUB_URL}" "${SUB_NAME}" "${VM_URL}"
 upload_url_data "${SUB_URL}" "${SUB_NAME}" "${VL_URL}"
 
+if [ -f /etc/alpine-release ]; then
   if [ -e ${FILE_PATH}/argo ]; then
     if ! pgrep -f argo > /dev/null; then
       systemctl start argo
@@ -55,6 +56,7 @@ upload_url_data "${SUB_URL}" "${SUB_NAME}" "${VL_URL}"
       systemctl start nezha-agent
     fi
   fi
+fi
 
 sleep 300
 done
