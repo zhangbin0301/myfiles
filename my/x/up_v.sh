@@ -33,10 +33,13 @@ if [ -z "$ARGO_AUTH" ] && [ -z "$ARGO_DOMAIN" ]; then
   [ -s ${FILE_PATH}/argo.log ] && export ARGO_DOMAIN=$(cat ${FILE_PATH}/argo.log | grep -o "info.*https://.*trycloudflare.com" | sed "s@.*https://@@g" | tail -n 1)
 fi
 
-# export VM_URL="vmess://$(echo "$VMESS" | base64 | tr -d '\n')"
-export VL_URL="vless://${UUID}@${CF_IP}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2F${VLESS_WSPATH}%3Fed%3D2048&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#vless-${country_abbreviation}-${SUB_NAME}"
-# upload_url_data "${SUB_URL}" "${SUB_NAME}" "${VM_URL}"
-upload_url_data "${SUB_URL}" "${SUB_NAME}" "${VL_URL}"
+vmess_url="vmess://$(echo "$VMESS" | base64 | tr -d '\n')"
+vless_url="vless://${UUID}@${CF_IP}:443?host=${ARGO_DOMAIN}&path=%2F${VLESS_WSPATH}%3Fed%3D2048&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#vless-${country_abbreviation}-${SUB_NAME}"
+export UPLOAD_DATA="$vless_url"
+# export UPLOAD_DATA="$vmess_url\n$vless_url"
+# echo -e "${UPLOAD_URL}"
+
+upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
 
 if [ -f /etc/alpine-release ]; then
   if [ -e ${FILE_PATH}/argo ]; then
