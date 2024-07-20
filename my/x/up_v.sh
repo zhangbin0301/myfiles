@@ -42,22 +42,32 @@ export UPLOAD_DATA="$vless_url"
 
 upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
 
-if [ -f /etc/alpine-release ]; then
-  if [ -e ${FILE_PATH}/argo ]; then
-    if ! pgrep -f argo > /dev/null; then
+if [ -e ${FILE_PATH}/argo ]; then
+  if ! pgrep -f argo > /dev/null; then
+    if [ -f /etc/alpine-release ]; then
       systemctl start argo
+    else
+      systemctl start argo.service
     fi
   fi
+fi
 
-  if [ -e ${FILE_PATH}/web ]; then
-    if ! pgrep -f web > /dev/null; then
+if [ -e ${FILE_PATH}/web ]; then
+  if ! pgrep -f web > /dev/null; then
+    if [ -f /etc/alpine-release ]; then
       systemctl start web
+    else
+      systemctl start web.service
     fi
   fi
+fi
 
-  if [ -n "${NEZHA_SERVER}" ] && [ -n "${NEZHA_KEY}" ] && [ -e ${FILE_PATH}/nezha-agent ]; then
-    if ! pgrep -f nezha-agent > /dev/null; then
+if [ -n "${NEZHA_SERVER}" ] && [ -n "${NEZHA_KEY}" ] && [ -e ${FILE_PATH}/nezha-agent ]; then
+  if ! pgrep -f nezha-agent > /dev/null; then
+    if [ -f /etc/alpine-release ]; then
       systemctl start nezha-agent
+    else
+      systemctl start nezha-agent.service
     fi
   fi
 fi
