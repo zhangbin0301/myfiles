@@ -31,12 +31,8 @@ if [ -z "$ARGO_AUTH" ] && [ -z "$ARGO_DOMAIN" ]; then
   [ -s ${FILE_PATH}/boot.log ] && export ARGO_DOMAIN=$(cat ${FILE_PATH}/boot.log | grep -o "info.*https://.*trycloudflare.com" | sed "s@.*https://@@g" | tail -n 1)
 fi
 
-if [ -e ${FILE_PATH}/country.txt ]; then
-  country_abbreviation=$(cat ${FILE_PATH}/country.txt)
-fi
-
-export UPLOAD_DATA="vless://${UUID}@${CF_IP}:443?host=${ARGO_DOMAIN}&path=%2F&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#vless-${country_abbreviation}-${SUB_NAME}"
-# export UPLOAD_DATA="vless://${UUID}@${ARGO_DOMAIN}:443?host=${ARGO_DOMAIN}&path=%2F&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#vless-${country_abbreviation}-${SUB_NAME}"
+export UPLOAD_DATA="vless://${UUID}@${CF_IP}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2F&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#${country_abbreviation}-${SUB_NAME}"
+# export UPLOAD_DATA="vless://${UUID}@${ARGO_DOMAIN}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2F&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#${country_abbreviation}-${SUB_NAME}"
 
 upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
 # echo "upload ok!"
