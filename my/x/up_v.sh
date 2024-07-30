@@ -35,6 +35,7 @@ if source ${FILE_PATH}/env_vars.sh; then
 
   if [ -z "$openreality" ]; then
     export UPLOAD_DATA="$vless_url"
+    # export UPLOAD_DATA="$vmess_url\n$vless_url"
   else
     export UPLOAD_DATA="$vless_url\n$reality_url"
   fi
