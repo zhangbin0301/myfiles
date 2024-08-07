@@ -31,12 +31,15 @@ fi
 vmess_url="vmess://$(echo "$VMESS" | base64 | tr -d '\n')"
 vless_url="vless://${UUID}@${CF_IP}:443?host=${ARGO_DOMAIN}&path=%2F${VLESS_WSPATH}%3Fed%3D2048&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#vless-${country_abbreviation}-${SUB_NAME}"
 
-if [ -z "$openreality" ]; then
+if [ -n "$openreality" ] && [ "$openreality" != "0" ]; then
+  reality_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&sid=${shortid}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}"
+  export UPLOAD_DATA="$vless_url\n$reality_url"
+elif [ -z "$openreality" ]; then
   export UPLOAD_DATA="$vless_url"
   # export UPLOAD_DATA="$vmess_url\n$vless_url"
 else
-  reality_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&sid=${shortid}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}"
-  export UPLOAD_DATA="$vless_url\n$reality_url"
+  export UPLOAD_DATA="$vless_url"
+  # export UPLOAD_DATA="$vmess_url\n$vless_url"
 fi
 # echo -e "${UPLOAD_URL}"
 
