@@ -40,7 +40,7 @@ elif [ -z "$openreality" ]; then
 else
   export UPLOAD_DATA="$vmess_url"
 fi
-# echo -e "${UPLOAD_URL}"
+# echo -e "${UPLOAD_DATA}"
 
 upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
 
