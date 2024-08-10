@@ -28,15 +28,21 @@ if [ -z "$ARGO_AUTH" ] && [ -z "$ARGO_DOMAIN" ]; then
   [ -s ${FILE_PATH}/boot.log ] && export ARGO_DOMAIN=$(cat ${FILE_PATH}/boot.log | grep -o "info.*https://.*trycloudflare.com" | sed "s@.*https://@@g" | tail -n 1)
 fi
 
-vmess_url="vmess://$(echo "$VMESS" | base64 -w0)"
+vmess_url="vmess://$(echo "$VMESS" | base64 | tr -d '\n')"
 hysteria_url="hysteria2://${UUID}@${IP}:${H_PORT}/?sni=www.bing.com&alpn=h3&insecure=1#${ISP}-${SUB_NAME}"
 tuic_url="tuic://${UUID}:@${IP}:${TUIC_PORT}?sni=www.bing.com&alpn=h3&congestion_control=bbr#${ISP}-${SUB_NAME}"
-vless_url="vless://${UUID}@${IP}:${SERVER_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${public_key}&type=tcp&headerType=none#${ISP}-${SUB_NAME}"
-export UPLOAD_DATA="$vmess_url\n$vless_url"
-# export UPLOAD_DATA="$vmess_url\n$hysteria_url\n$tuic_url\n$vless_url"
-# echo -e "${VL_URL}"
+reality_url="vless://${UUID}@${IP}:${SERVER_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${public_key}&type=tcp&headerType=none#${ISP}-${SUB_NAME}"
+
+if [ -n "$openreality" ] && [ "$openreality" != "0" ]; then
+  export UPLOAD_DATA="$vmess_url\n$reality_url"
+elif [ -z "$openreality" ]; then
+  export UPLOAD_DATA="$vmess_url"
+else
+  export UPLOAD_DATA="$vmess_url"
+fi
+# echo -e "${UPLOAD_URL}"
 
 upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
 
 sleep 300
-done 
+done
