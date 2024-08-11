@@ -65,5 +65,5 @@ if [ -n "$openkeepalive" ] && [ "$openkeepalive" != "0" ]; then
   fi
 fi
 
-sleep 300
+sleep 50
 done
