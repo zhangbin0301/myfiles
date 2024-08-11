@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-check_hostname_change() {
-  if [ -z "$ARGO_AUTH" ] && [ -z "$ARGO_DOMAIN" ]; then
-    [ -s ${FILE_PATH}/boot.log ] && export ARGO_DOMAIN=$(cat ${FILE_PATH}/boot.log | grep -o "info.*https://.*trycloudflare.com" | sed "s@.*https://@@g" | tail -n 1)
-  fi
-}
-
 while true
 do
 # 上传订阅
@@ -33,7 +27,9 @@ upload_url_data() {
     fi
 }
 
-check_hostname_change
+if [ -z "$ARGO_AUTH" ] && [ -z "$ARGO_DOMAIN" ]; then
+  [ -s ${FILE_PATH}/boot.log ] && export ARGO_DOMAIN=$(cat ${FILE_PATH}/boot.log | grep -o "info.*https://.*trycloudflare.com" | sed "s@.*https://@@g" | tail -n 1)
+fi
 
 export UPLOAD_DATA="vless://${UUID}@${CF_IP}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2F&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#${country_abbreviation}-${SUB_NAME}"
 # export UPLOAD_DATA="vless://${UUID}@${ARGO_DOMAIN}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2F&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#${country_abbreviation}-${SUB_NAME}"
@@ -49,8 +45,6 @@ if [ -n "$openkeepalive" ] && [ "$openkeepalive" != "0" ]; then
   else
     if [ -e ${FILE_PATH}/cfstart.sh ]; then
       bash ${FILE_PATH}/cfstart.sh > /dev/null 2>&1 &
-      sleep 3
-      check_hostname_change
       echo "server runs again !"
     fi
   fi
