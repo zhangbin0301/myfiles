@@ -48,7 +48,7 @@ if [ -n "$openkeepalive" ] && [ "$openkeepalive" != "0" ]; then
     echo "server is already running !"
   else
     if [ -e ${FILE_PATH}/server ] && [ -e ${FILE_PATH}/cfstart.sh ]; then
-      bash ${FILE_PATH}/cfstart.sh
+      bash ${FILE_PATH}/cfstart.sh > /dev/null 2>&1 &
       sleep 3
       check_hostname_change
       echo "server runs again !"
