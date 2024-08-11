@@ -45,7 +45,7 @@ if source ${FILE_PATH}/env_vars.sh; then
   # echo -e "${UPLOAD_DATA}"
 
   upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
-   # echo "upload ok !"
+  # echo "upload ok !"
 
   if [ -e ${FILE_PATH}/argo ]; then
     if ! pgrep -f argo > /dev/null; then
