@@ -47,7 +47,7 @@ if [ -n "$openkeepalive" ] && [ "$openkeepalive" != "0" ]; then
   if [[ $(pidof server) ]]; then
     echo "server is already running !"
   else
-    if [ -e ${FILE_PATH}/server ] && [ -e ${FILE_PATH}/cfstart.sh ]; then
+    if [ -e ${FILE_PATH}/cfstart.sh ]; then
       bash ${FILE_PATH}/cfstart.sh > /dev/null 2>&1 &
       sleep 3
       check_hostname_change
@@ -58,8 +58,8 @@ if [ -n "$openkeepalive" ] && [ "$openkeepalive" != "0" ]; then
   if [[ $(pidof npm) ]]; then
     echo "npm is already running !"
   else
-    if [ -e ${FILE_PATH}/npm ]; then
-      ${FILE_PATH}/npm -s ${NEZHA_SERVER}:${NEZHA_PORT} -p ${NEZHA_KEY} ${NEZHA_TLS} > /dev/null 2>&1 &
+    if [ -e ${FILE_PATH}/nzstart.sh ]; then
+      bash ${FILE_PATH}/nzstart.sh > /dev/null 2>&1 &
       echo "npm runs again !"
     fi
   fi
