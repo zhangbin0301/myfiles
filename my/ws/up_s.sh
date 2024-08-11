@@ -6,26 +6,6 @@ check_hostname_change() {
   fi
 }
 
-run_server() {
-  if [ -e ${FILE_PATH}/server ]; then
-    ${FILE_PATH}/server $args >/dev/null 2>&1 &
-    sleep 5
-    check_hostname_change
-  fi
-}
-
-run_npm() {
-  if [ -e ${FILE_PATH}/npm ] &&  [ -n "${NEZHA_SERVER}" ] && [ -n "${NEZHA_KEY}" ]; then
-    tlsPorts=("443" "8443" "2096" "2087" "2083" "2053")
-    if [[ " ${tlsPorts[@]} " =~ " ${NEZHA_PORT} " ]]; then
-      NEZHA_TLS="--tls"
-    else
-      NEZHA_TLS=""
-    fi
-    ${FILE_PATH}/npm -s ${NEZHA_SERVER}:${NEZHA_PORT} -p ${NEZHA_KEY} ${NEZHA_TLS} >/dev/null 2>&1 &
-  fi
-}
-
 while true
 do
 # 上传订阅
@@ -68,7 +48,8 @@ if [ -n "$openkeepalive" ] && [ "$openkeepalive" != "0" ]; then
     echo "server is already running !"
   else
     if [ -e ${FILE_PATH}/server ]; then
-      run_server
+      ${FILE_PATH}/server $args > /dev/null 2>&1 &
+      sleep 3
       check_hostname_change
       echo "server runs again !"
     fi
@@ -78,7 +59,7 @@ if [ -n "$openkeepalive" ] && [ "$openkeepalive" != "0" ]; then
     echo "npm is already running !"
   else
     if [ -e ${FILE_PATH}/npm ]; then
-      run_npm
+      ${FILE_PATH}/npm -s ${NEZHA_SERVER}:${NEZHA_PORT} -p ${NEZHA_KEY} ${NEZHA_TLS} > /dev/null 2>&1 &
       echo "npm runs again !"
     fi
   fi
