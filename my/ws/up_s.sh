@@ -45,17 +45,17 @@ fi
 
 if [ -n "$openkeepalive" ] && [ "$openkeepalive" != "0" ]; then
   if [[ $(pidof server) ]]; then
-    hint "server is already running !"
+    echo "server is already running !"
   else
-    info "server runs again !"
+    echo "server runs again !"
     run_server
     build_urls
   fi
 
   if [[ $(pidof npm) ]]; then
-    hint "npm is already running !"
+    echo "npm is already running !"
   else
-    info "npm runs again !"
+    echo "npm runs again !"
     run_npm
   fi
 fi
