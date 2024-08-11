@@ -69,7 +69,7 @@ if [ -n "$openkeepalive" ] && [ "$openkeepalive" != "0" ]; then
   else
     if [ -e ${FILE_PATH}/server ]; then
       run_server
-      build_urls
+      check_hostname_change
       echo "server runs again !"
     fi
   fi
