@@ -40,7 +40,7 @@ export UPLOAD_DATA="vless://${UUID}@${CF_IP}:${CFPORT}?host=${ARGO_DOMAIN}&path=
 
 if [ -n "$SUB_URL" ]; then
   upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
-  # echo "upload ok!"
+  echo "upload ok !"
 fi
 
 if [ -n "$openkeepalive" ] && [ "$openkeepalive" != "0" ]; then
