@@ -46,6 +46,6 @@ if source ${FILE_PATH}/env_vars.sh; then
 
   upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
 
-  sleep 300
+  sleep 100
   done
 fi
