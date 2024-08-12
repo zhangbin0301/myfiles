@@ -25,7 +25,7 @@ if source ${FILE_PATH}/env_vars.sh; then
   }
 
   if [ -z "$ARGO_AUTH" ] && [ -z "$ARGO_DOMAIN" ]; then
-    [ -s ${FILE_PATH}/argo.log ] && export ARGO_DOMAIN=$(cat ${FILE_PATH}/argo.log | grep -o "https://.*trycloudflare.com" | tail -n 1 | sed 's/https:\/\///')
+    [ -s ${FILE_PATH}/boot.log ] && export ARGO_DOMAIN=$(cat ${FILE_PATH}/boot.log | grep -o "info.*https://.*trycloudflare.com" | sed "s@.*https://@@g" | tail -n 1)
   fi
 
   VMESS="{ \"v\": \"2\", \"ps\": \"${ISP}-${SUB_NAME}\", \"add\": \"${CFIP}\", \"port\": \"${CFPORT}\", \"id\": \"${UUID}\", \"aid\": \"0\", \"scy\": \"none\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"${ARGO_DOMAIN}\", \"path\": \"/vmess?ed=2048\", \"tls\": \"tls\", \"sni\": \"${ARGO_DOMAIN}\", \"alpn\": \"\", \"fp\": \"randomized\"}"
@@ -42,9 +42,22 @@ if source ${FILE_PATH}/env_vars.sh; then
   else
     export UPLOAD_DATA="$vmess_url"
   fi
-  # echo -e "${UPLOAD_DATA}"
+  # echo "${UPLOAD_DATA}"
 
   upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
+
+
+  if [ -e ${FILE_PATH}/server ] && [ -f /etc/alpine-release ] && [[ ! $(pgrep -laf server) ]]; then
+    systemctl start argo
+  fi
+
+  if [ -e ${FILE_PATH}/web ] && [ -f /etc/alpine-release ] && [[ ! $(pgrep -laf web) ]]; then
+    systemctl start web
+  fi
+
+  if [ -e ${FILE_PATH}/nezha-agent ] && [ -f /etc/alpine-release ] && [[ ! $(pgrep -laf nezha-agent) ]]; then
+    systemctl start nezha-agent
+  fi
 
   sleep 300
   done
