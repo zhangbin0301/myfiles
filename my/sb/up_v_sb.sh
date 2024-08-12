@@ -35,7 +35,7 @@ if source ${FILE_PATH}/env_vars.sh; then
 
   vmess_url="vmess://$(echo "$VMESS" | base64 | tr -d '\n')"
   hysteria_url="hysteria2://${UUID}@${IP}:${H_PORT}/?sni=www.bing.com&alpn=h3&insecure=1#${ISP}-${SUB_NAME}"
-  tuic_url="tuic://${UUID}:${realpass}@${IP}:${TUIC_PORT}?sni=www.bing.com&congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#${ISP}-${SUB_NAME}"
+  tuic_url="tuic://${UUID}:${tuicpass}@${IP}:${TUIC_PORT}?sni=www.bing.com&congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#${ISP}-${SUB_NAME}"
   reality_url="vless://${UUID}@${IP}:${SERVER_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${public_key}&type=tcp&headerType=none#${ISP}-${SUB_NAME}"
 
   if [ -n "$openreality" ] && [ "$openreality" != "0" ]; then
