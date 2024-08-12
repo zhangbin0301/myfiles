@@ -42,7 +42,7 @@ if source ${FILE_PATH}/env_vars.sh; then
   else
     export UPLOAD_DATA="$vmess_url"
   fi
-  # echo "${UPLOAD_DATA}"
+  # echo "upload ok !"
 
   upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
 
