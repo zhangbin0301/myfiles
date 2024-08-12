@@ -24,15 +24,15 @@ if source ${FILE_PATH}/env_vars.sh; then
       fi
   }
 
-  if [ -z "$ARGO_AUTH" ] && [ -z "$ARGO_DOMAIN" ]; then
-    [ -s ${FILE_PATH}/argo.log ] && export ARGO_DOMAIN=$(cat ${FILE_PATH}/argo.log | grep -o "info.*https://.*trycloudflare.com" | tail -n 1 | sed "s@.*https://@@g")
-  fi
+  [ -s ${FILE_PATH}/argo.log ] && export ARGO_DOMAIN=$(cat ${FILE_PATH}/argo.log | grep -o "info.*https://.*trycloudflare.com" | tail -n 1 | sed "s@.*https://@@g")
+  # [ -s ${FILE_PATH}/argo.log ] && export ARGO_DOMAIN=$(cat ${FILE_PATH}/argo.log | grep -o "info.*https://.*trycloudflare.com" | sed "s@.*https://@@g" | tail -n 1)
+  # [ -s ${FILE_PATH}/argo.log ] && export ARGO_DOMAIN=$(cat ${FILE_PATH}/argo.log | grep -o "https://.*trycloudflare.com" | tail -n 1 | sed 's/https:\/\///')
 
   VMESS="{ \"v\": \"2\", \"ps\": \"${ISP}-${SUB_NAME}\", \"add\": \"${CFIP}\", \"port\": \"${CFPORT}\", \"id\": \"${UUID}\", \"aid\": \"0\", \"scy\": \"none\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"${ARGO_DOMAIN}\", \"path\": \"/vmess?ed=2048\", \"tls\": \"tls\", \"sni\": \"${ARGO_DOMAIN}\", \"alpn\": \"\", \"fp\": \"randomized\"}"
 
   vmess_url="vmess://$(echo "$VMESS" | base64 | tr -d '\n')"
   hysteria_url="hysteria2://${UUID}@${IP}:${H_PORT}/?sni=www.bing.com&alpn=h3&insecure=1#${ISP}-${SUB_NAME}"
-  tuic_url="tuic://${UUID}:${password}@${IP}:${TUIC_PORT}?sni=www.bing.com&congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#${ISP}-${SUB_NAME}"
+  tuic_url="tuic://${UUID}:${realpass}@${IP}:${TUIC_PORT}?sni=www.bing.com&congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#${ISP}-${SUB_NAME}"
   reality_url="vless://${UUID}@${IP}:${SERVER_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${public_key}&type=tcp&headerType=none#${ISP}-${SUB_NAME}"
 
   if [ -n "$openreality" ] && [ "$openreality" != "0" ]; then
@@ -46,6 +46,6 @@ if source ${FILE_PATH}/env_vars.sh; then
 
   upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
 
-  sleep 100
+  sleep 300
   done
 fi
