@@ -46,7 +46,6 @@ if source ${FILE_PATH}/env_vars.sh; then
 
   upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
 
-
   if [ -e ${FILE_PATH}/server ] && [ -f /etc/alpine-release ] && [[ ! $(pgrep -laf server) ]]; then
     systemctl start argo
   fi
