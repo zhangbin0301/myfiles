@@ -12,10 +12,8 @@ upload_url_data() {
   URL_NAME="$2"
   URL_TO_UPLOAD="$3"
 
-  # 检查curl命令是否存在
   if command -v curl &> /dev/null; then
     curl -s -o /dev/null -X POST -H "Content-Type: application/json" -d "{\"URL_NAME\": \"$URL_NAME\", \"URL\": \"$URL_TO_UPLOAD\"}" "$UPLOAD_URL"
-  # 检查wget命令是否存在
   elif command -v wget &> /dev/null; then
     echo "{\"URL_NAME\": \"$URL_NAME\", \"URL\": \"$URL_TO_UPLOAD\"}" | wget --quiet --post-data=- --header="Content-Type: application/json" "$UPLOAD_URL" -O -
   else
