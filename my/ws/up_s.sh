@@ -29,30 +29,8 @@ fi
 export UPLOAD_DATA="vless://${UUID}@${CF_IP}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2F&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#${country_abbreviation}-${SUB_NAME}"
 # export UPLOAD_DATA="vless://${UUID}@${ARGO_DOMAIN}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2F&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#${country_abbreviation}-${SUB_NAME}"
 
-if [ -n "$SUB_URL" ]; then
-  upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
-  echo "upload ok !"
-fi
+upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
+# echo "upload ok !"
 
-if [ -n "$openkeepalive" ] && [ "$openkeepalive" != "0" ]; then
-  if [[ $(pidof server) ]]; then
-    echo "server is already running !"
-  else
-    if [ -e ${FILE_PATH}/cfstart.sh ]; then
-      bash ${FILE_PATH}/cfstart.sh > /dev/null 2>&1 &
-      echo "server runs again !"
-    fi
-  fi
-
-  if [[ $(pidof npm) ]]; then
-    echo "npm is already running !"
-  else
-    if [ -e ${FILE_PATH}/nzstart.sh ]; then
-      bash ${FILE_PATH}/nzstart.sh > /dev/null 2>&1 &
-      echo "npm runs again !"
-    fi
-  fi
-fi
-
-sleep 50
+sleep 100
 done
