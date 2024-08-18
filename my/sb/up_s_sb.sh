@@ -37,11 +37,13 @@ if [ -n "$openreality" ] && [ "$openreality" != "0" ]; then
   # export UPLOAD_DATA="$vmess_url\n$reality_url"
   # export UPLOAD_DATA="$vless_url\n$reality_url"
 elif [ -z "$openreality" ]; then
+  export UPLOAD_DATA="$vmess_url\n$vless_url"
   # export UPLOAD_DATA="$vmess_url"
-  export UPLOAD_DATA="$vless_url"
+  # export UPLOAD_DATA="$vless_url"
 else
+  export UPLOAD_DATA="$vmess_url\n$vless_url"
   # export UPLOAD_DATA="$vmess_url"
-  export UPLOAD_DATA="$vless_url"
+  # export UPLOAD_DATA="$vless_url"
 fi
 # echo -e "${UPLOAD_DATA}"
 
