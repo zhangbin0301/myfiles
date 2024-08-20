@@ -13,10 +13,8 @@ if source /root/env.yml; then
     URL_NAME="$2"
     URL_TO_UPLOAD="$3"
 
-    # 检查curl命令是否存在
     if command -v curl &> /dev/null; then
       curl -s -o /dev/null -X POST -H "Content-Type: application/json" -d "{\"URL_NAME\": \"$URL_NAME\", \"URL\": \"$URL_TO_UPLOAD\"}" "$UPLOAD_URL"
-    # 检查wget命令是否存在
     elif command -v wget &> /dev/null; then
       echo "{\"URL_NAME\": \"$URL_NAME\", \"URL\": \"$URL_TO_UPLOAD\"}" | wget --quiet --post-data=- --header="Content-Type: application/json" "$UPLOAD_URL" -O -
     else
@@ -45,6 +43,20 @@ if source /root/env.yml; then
 
   upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
   # echo "upload ok!"
+
+  if [ -f /etc/alpine-release ]; then
+    if ! pgrep -f "${FILE_PATH}/argo" > /dev/null; then
+      systemctl start argo
+    fi
+
+    if ! pgrep -f "${FILE_PATH}/web" > /dev/null; then
+      systemctl start web
+    fi
+
+    if ! pgrep -f "${FILE_PATH}/nezha-agent" > /dev/null; then
+      systemctl start nezha-agent
+    fi
+  fi
 
   sleep 100
   done
