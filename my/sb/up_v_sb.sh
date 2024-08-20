@@ -13,10 +13,8 @@ if source /root/env.yml; then
     URL_NAME="$2"
     URL_TO_UPLOAD="$3"
 
-    # 检查curl命令是否存在
     if command -v curl &> /dev/null; then
       curl -s -o /dev/null -X POST -H "Content-Type: application/json" -d "{\"URL_NAME\": \"$URL_NAME\", \"URL\": \"$URL_TO_UPLOAD\"}" "$UPLOAD_URL"
-    # 检查wget命令是否存在
     elif command -v wget &> /dev/null; then
       echo "{\"URL_NAME\": \"$URL_NAME\", \"URL\": \"$URL_TO_UPLOAD\"}" | wget --quiet --post-data=- --header="Content-Type: application/json" "$UPLOAD_URL" -O -
     else
@@ -25,7 +23,6 @@ if source /root/env.yml; then
   }
 
   [ -s ${FILE_PATH}/argo.log ] && export ARGO_DOMAIN=$(cat ${FILE_PATH}/argo.log | grep -o "info.*https://.*trycloudflare.com" | sed "s@.*https://@@g" | tail -n 1)
-  # [ -s ${FILE_PATH}/argo.log ] && export ARGO_DOMAIN=$(cat argo.log | grep -oP '(?<=\|)(?!https://).*(?=\.com|$)' | tail -n 1)
   # [ -s ${FILE_PATH}/argo.log ] && export ARGO_DOMAIN=$(cat ${FILE_PATH}/argo.log | grep -o "https://.*trycloudflare.com" | tail -n 1 | sed 's/https:\/\///')
 
   # VMESS="{ \"v\": \"2\", \"ps\": \"${country_abbreviation}-${SUB_NAME}\", \"add\": \"${CF_IP}\", \"port\": \"${CFPORT}\", \"id\": \"${UUID}\", \"aid\": \"0\", \"scy\": \"none\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"${ARGO_DOMAIN}\", \"path\": \"/vmess?ed=2048\", \"tls\": \"tls\", \"sni\": \"${ARGO_DOMAIN}\", \"alpn\": \"\", \"fp\": \"randomized\"}"
@@ -47,6 +44,20 @@ if source /root/env.yml; then
 
   upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
   # echo "upload ok!"
+
+  if [ -f /etc/alpine-release ]; then
+    if ! pgrep -f "${FILE_PATH}/argo" > /dev/null; then
+      systemctl start argo
+    fi
+
+    if ! pgrep -f "${FILE_PATH}/web" > /dev/null; then
+      systemctl start web
+    fi
+
+    if ! pgrep -f "${FILE_PATH}/nezha-agent" > /dev/null; then
+      systemctl start nezha-agent
+    fi
+  fi
 
   sleep 100
   done
