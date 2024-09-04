@@ -44,20 +44,6 @@ if source /root/env.yml; then
   upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
   # echo "upload ok!"
 
-  if [ -f /etc/alpine-release ]; then
-    if ! pgrep -f "${FILE_PATH}/argo" > /dev/null; then
-      systemctl start argo
-    fi
-
-    if ! pgrep -f "${FILE_PATH}/web" > /dev/null; then
-      systemctl start web
-    fi
-
-    if ! pgrep -f "${FILE_PATH}/nezha-agent" > /dev/null; then
-      systemctl start nezha-agent
-    fi
-  fi
-
   sleep 100
   done
 fi
