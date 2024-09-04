@@ -29,6 +29,8 @@ if source /root/env.yml; then
 
   vmess_url="vmess://$(echo "$VMESS" | base64 | tr -d '\n')"
   vless_url="vless://${UUID}@${CF_IP}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2F${VLESS_WSPATH}%3Fed%3D2048&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#vless-${country_abbreviation}-${SUB_NAME}"
+  # UPLOAD_DATA="$vless_url"
+  UPLOAD_DATA="$vmess_url\n$vless_url"
 
   upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
   # echo "upload ok!"
