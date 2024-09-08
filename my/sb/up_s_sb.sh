@@ -35,15 +35,15 @@ reality_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx
 UPLOAD_DATA="$vless_url"
 
 if [ -n "$HY2_PORT" ]; then
-  UPLOAD_DATA="$UPLOAD_DATA\n$hysteria_server_url"
+  UPLOAD_DATA="$UPLOAD_DATA\n$hysteria_url"
 fi
 
 if [ -n "$TUIC_PORT" ]; then
-  UPLOAD_DATA="$UPLOAD_DATA\n$tuic_server_url"
+  UPLOAD_DATA="$UPLOAD_DATA\n$tuic_url"
 fi
 
 if [ -n "$REAL_PORT" ]; then
-  UPLOAD_DATA="$UPLOAD_DATA\n$reality_server_url"
+  UPLOAD_DATA="$UPLOAD_DATA\n$reality_url"
 fi
 
 export UPLOAD_DATA
