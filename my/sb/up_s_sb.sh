@@ -28,23 +28,26 @@ fi
 
 # vmess_url="vmess://$(echo "$VMESS" | base64 | tr -d '\n')"
 vless_url="vless://${UUID}@${CF_IP}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2Fvless%3Fed%3D2048&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#vless-${country_abbreviation}-${SUB_NAME}"
-# hysteria_url="hysteria2://${UUID}@${MYIP}:${HY2_PORT}/?sni=www.bing.com&alpn=h3&insecure=1#${country_abbreviation}-${SUB_NAME}"
-# tuic_url="tuic://${UUID}:${tuicpass}@${MYIP}:${TUIC_PORT}?sni=www.bing.com&congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#${country_abbreviation}-${SUB_NAME}"
+hysteria_url="hysteria2://${UUID}@${MYIP}:${HY2_PORT}/?sni=www.bing.com&alpn=h3&insecure=1#${country_abbreviation}-${SUB_NAME}"
+tuic_url="tuic://${UUID}:${tuicpass}@${MYIP}:${TUIC_PORT}?sni=www.bing.com&congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#${country_abbreviation}-${SUB_NAME}"
 reality_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${public_key}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}"
 
-if [ -n "$openreality" ] && [ "$openreality" != "0" ]; then
-  # export UPLOAD_DATA="$vmess_url\n$vless_url\n$reality_url"
-  # export UPLOAD_DATA="$vmess_url\n$reality_url"
-  export UPLOAD_DATA="$vless_url\n$reality_url"
-elif [ -z "$openreality" ]; then
-  # export UPLOAD_DATA="$vmess_url\n$vless_url"
-  # export UPLOAD_DATA="$vmess_url"
-  export UPLOAD_DATA="$vless_url"
-else
-  # export UPLOAD_DATA="$vmess_url\n$vless_url"
-  # export UPLOAD_DATA="$vmess_url"
-  export UPLOAD_DATA="$vless_url"
+UPLOAD_DATA="$vless_url"
+
+if [ -n "$HY2_PORT" ]; then
+  UPLOAD_DATA="$UPLOAD_DATA\n$hysteria_server_url"
 fi
+
+if [ -n "$TUIC_PORT" ]; then
+  UPLOAD_DATA="$UPLOAD_DATA\n$tuic_server_url"
+fi
+
+if [ -n "$REAL_PORT" ]; then
+  UPLOAD_DATA="$UPLOAD_DATA\n$reality_server_url"
+fi
+
+export UPLOAD_DATA
+
 # echo -e "${UPLOAD_DATA}"
 
 upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
