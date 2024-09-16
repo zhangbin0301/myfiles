@@ -33,7 +33,9 @@ tuic_url="tuic://${UUID}:${tuicpass}@${MYIP}:${TUIC_PORT}?sni=www.bing.com&conge
 reality_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${public_key}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}"
 socks_url="socks5://$SOCKS_USER:$SOCKS_PASS@$MYIP:$SOCKS_PORT#${country_abbreviation}-${SUB_NAME}"
 
-UPLOAD_DATA="$vless_url"
+if [ -n "$V_PORT" ]; then
+  UPLOAD_DATA="$vless_url"
+fi
 
 if [ -n "$HY2_PORT" ]; then
   UPLOAD_DATA="$UPLOAD_DATA\n$hysteria_url"
