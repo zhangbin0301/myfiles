@@ -31,11 +31,8 @@ vless_url="vless://${UUID}@${CF_IP}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2Fvless%
 hysteria_url="hysteria2://${UUID}@${MYIP}:${HY2_PORT}/?sni=www.bing.com&alpn=h3&insecure=1#${country_abbreviation}-${SUB_NAME}"
 tuic_url="tuic://${UUID}:${tuicpass}@${MYIP}:${TUIC_PORT}?sni=www.bing.com&congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#${country_abbreviation}-${SUB_NAME}"
 reality_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${public_key}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}"
-socks_url="socks5://$SOCKS_USER:$SOCKS_PASS@$MYIP:$SOCKS_PORT#${country_abbreviation}-${SUB_NAME}"
 
-if [ -n "$V_PORT" ]; then
-  UPLOAD_DATA="$vless_url"
-fi
+UPLOAD_DATA="$vless_url"
 
 if [ -n "$HY2_PORT" ]; then
   UPLOAD_DATA="$UPLOAD_DATA\n$hysteria_url"
@@ -47,10 +44,6 @@ fi
 
 if [ -n "$REAL_PORT" ]; then
   UPLOAD_DATA="$UPLOAD_DATA\n$reality_url"
-fi
-
-if [ -n "${SOCKS_PORT}" ] && [ -n "${SOCKS_USER}" ] && [ -n "${SOCKS_PASS}" ]; then
-  UPLOAD_DATA="$UPLOAD_DATA\n$socks_url"
 fi
 
 export UPLOAD_DATA
