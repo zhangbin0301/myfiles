@@ -27,13 +27,15 @@ if source /root/env.yml; then
 
   VMESS="{ \"v\": \"2\", \"ps\": \"${country_abbreviation}-${SUB_NAME}\", \"add\": \"${CF_IP}\", \"port\": \"${CFPORT}\", \"id\": \"${UUID}\", \"aid\": \"0\", \"scy\": \"none\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"${ARGO_DOMAIN}\", \"path\": \"/${VMESS_WSPATH}?ed=2048\", \"tls\": \"tls\", \"sni\": \"${ARGO_DOMAIN}\", \"alpn\": \"\" }"
 
+  splithttp="{ \"v\": \"2\", \"ps\": \"${country_abbreviation}-${SUB_NAME}-splithttp\", \"add\": \"${CF_IP}\", \"port\": \"${CFPORT}\", \"id\": \"${UUID}\", \"aid\": \"0\", \"scy\": \"none\", \"net\": \"splithttp\", \"type\": \"none\", \"host\": \"${ARGO_DOMAIN}\", \"path\": \"\", \"tls\": \"tls\", \"sni\": \"${ARGO_DOMAIN}\", \"alpn\": \"\" }"
+
   # vmess_url="vmess://$(echo "$VMESS" | base64 | tr -d '\n')"
+  splithttp_url="vmess://$(echo "$splithttp" | base64 | tr -d '\n')"
   vless_url="vless://${UUID}@${CF_IP}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2F${VLESS_WSPATH}%3Fed%3D2048&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#vless-${country_abbreviation}-${SUB_NAME}"
-  splithttp_url="vless://${UUID}@${CF_IP}:443?path=%2Fsplithttp&security=tls&encryption=none&alpn=h2&host=${MY_DOMAIN}&type=splithttp&sni=${MY_DOMAIN}#${country_abbreviation}-${SUB_NAME}-splithttp"
   reality_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}"
 
   # UPLOAD_DATA="$vmess_url\n$vless_url"
-  UPLOAD_DATA="$vless_url\n$splithttp_url"
+  UPLOAD_DATA="$splithttp_url\n$vless_url"
 
   if [ -n "$REAL_PORT" ]; then
     UPLOAD_DATA="$UPLOAD_DATA\n$reality_url"
