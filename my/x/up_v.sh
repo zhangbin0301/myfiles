@@ -29,7 +29,7 @@ if source /root/env.yml; then
 
   # vmess_url="vmess://$(echo "$VMESS" | base64 | tr -d '\n')"
   vless_url="vless://${UUID}@${CF_IP}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2F${VLESS_WSPATH}%3Fed%3D2048&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#vless-${country_abbreviation}-${SUB_NAME}"
-  splithttp_url="vless://${UUID}@${CF_IP}:8443?path=%2Fsplit&security=tls&encryption=none&host=${MY_DOMAIN}&type=splithttp&sni=${MY_DOMAIN}#${country_abbreviation}-${SUB_NAME}-splithttp"
+  splithttp_url="vless://${UUID}@${CF_IP}:${splitport}?path=%2Fsplithttp&security=tls&encryption=none&alpn=h2&host=${MY_DOMAIN}&type=splithttp&sni=${MY_DOMAIN}#${country_abbreviation}-${SUB_NAME}-splithttp"
   reality_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}"
 
   # UPLOAD_DATA="$vmess_url\n$vless_url"
