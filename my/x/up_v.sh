@@ -22,7 +22,7 @@ if source /root/env.yml; then
     fi
   }
 
-  splithttp_url="vless://${UUID}@${MY_DOMAIN}:${SPLIT_PORT}?path=%2Fsplithttp&security=tls&encryption=none&alpn=h3&host=${MY_DOMAIN}&type=splithttp&sni=${MY_DOMAIN}#${country_abbreviation}-${SUB_NAME}-splithttp"
+  splithttp_url="vless://${UUID}@${MYIP}:${SPLIT_PORT}?path=%2Fsplithttp&security=tls&encryption=none&alpn=h3&host=${MYIP}&type=splithttp#${country_abbreviation}-${SUB_NAME}-splithttp"
   reality_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}-tcp"
   reality_grpc_url="vless://${UUID}@${MYIP}:${REAL_PORT}?security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&type=grpc&serviceName=grpc&encryption=none#${country_abbreviation}-${SUB_NAME}-grpc"
 
