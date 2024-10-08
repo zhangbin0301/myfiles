@@ -13,8 +13,10 @@ if source /root/env.yml; then
     URL_NAME="$2"
     URL_TO_UPLOAD="$3"
 
+    # 检查curl命令是否存在
     if command -v curl &> /dev/null; then
       curl -s -o /dev/null -X POST -H "Content-Type: application/json" -d "{\"URL_NAME\": \"$URL_NAME\", \"URL\": \"$URL_TO_UPLOAD\"}" "$UPLOAD_URL"
+    # 检查wget命令是否存在
     elif command -v wget &> /dev/null; then
       echo "{\"URL_NAME\": \"$URL_NAME\", \"URL\": \"$URL_TO_UPLOAD\"}" | wget --quiet --post-data=- --header="Content-Type: application/json" "$UPLOAD_URL" -O -
     else
@@ -33,7 +35,10 @@ if source /root/env.yml; then
   # UPLOAD_DATA="$vmess_url\n$vless_url"
   UPLOAD_DATA="$vless_url"
 
-  if [ -n "$REAL_PORT" ]; then
+  if [ -n "$REAL_PORT" ] && [ -n "$shortid" ]; then
+    reality_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&sid=${shortid}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}-realtcp"
+    UPLOAD_DATA="$UPLOAD_DATA\n$reality_url"
+  elif [ -n "$REAL_PORT" ] && [ -z "${shortid}" ]; then
     realitytcp_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}-realtcp"
     realitygprc_url="vless://${UUID}@${MYIP}:${REAL_PORT}?security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&type=grpc&serviceName=grpc&encryption=none#${country_abbreviation}-${SUB_NAME}-realgrpc"
     UPLOAD_DATA="$UPLOAD_DATA\n$realitytcp_url\n$realitygprc_url"
