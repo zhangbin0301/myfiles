@@ -33,11 +33,11 @@ vless_url="vless://${UUID}@${CF_IP}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2F${VLES
 UPLOAD_DATA="$vless_url"
 
 if [ -n "$REAL_PORT" ] && [ -n "$shortid" ]; then
-  reality_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&sid=${shortid}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}-realtcp"
+  reality_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&sid=${shortid}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}-realitytcp"
   UPLOAD_DATA="$UPLOAD_DATA\n$reality_url"
 elif [ -n "$REAL_PORT" ] && [ -z "$shortid" ]; then
-  realitytcp_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}-realtcp"
-  realitygprc_url="vless://${UUID}@${MYIP}:${REAL_PORT}?security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&type=grpc&serviceName=grpc&encryption=none#${country_abbreviation}-${SUB_NAME}-realgrpc"
+  realitytcp_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}-realitytcp"
+  realitygprc_url="vless://${UUID}@${MYIP}:${REAL_PORT}?security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&type=grpc&serviceName=grpc&encryption=none#${country_abbreviation}-${SUB_NAME}-realitygrpc"
   UPLOAD_DATA="$UPLOAD_DATA\n$realitytcp_url\n$realitygprc_url"
 fi
 
