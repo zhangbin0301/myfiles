@@ -38,7 +38,7 @@ if source /root/env.yml; then
   if [ -n "$REAL_PORT" ] && [ -n "$shortid" ]; then
     reality_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&sid=${shortid}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}-realtcp"
     UPLOAD_DATA="$UPLOAD_DATA\n$reality_url"
-  elif [ -n "$REAL_PORT" ] && [ -z "${shortid}" ]; then
+  elif [ -n "$REAL_PORT" ] && [ -z "$shortid" ]; then
     realitytcp_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}-realtcp"
     realitygprc_url="vless://${UUID}@${MYIP}:${REAL_PORT}?security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&type=grpc&serviceName=grpc&encryption=none#${country_abbreviation}-${SUB_NAME}-realgrpc"
     UPLOAD_DATA="$UPLOAD_DATA\n$realitytcp_url\n$realitygprc_url"
