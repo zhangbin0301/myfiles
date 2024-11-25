@@ -33,12 +33,12 @@ vless_url="vless://${UUID}@${CF_IP}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2F${VLES
 UPLOAD_DATA="$vless_url"
 
 if [ -n "$REAL_PORT" ] && [ -n "$shortid" ]; then
-  reality_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&sid=${shortid}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}-realitytcp"
-  UPLOAD_DATA="$UPLOAD_DATA\n$reality_url"
+  realitytcp_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&sid=${shortid}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}-realtcp"
 elif [ -n "$REAL_PORT" ] && [ -z "$shortid" ]; then
-  realitytcp_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}-realitytcp"
-  UPLOAD_DATA="$UPLOAD_DATA\n$reality_url"
+  realitytcp_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}-realtcp"
 fi
+
+UPLOAD_DATA="$UPLOAD_DATA\n$realitytcp_url"
 
 export UPLOAD_DATA
 # echo -e "${UPLOAD_DATA}"
