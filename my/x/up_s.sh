@@ -37,8 +37,7 @@ if [ -n "$REAL_PORT" ] && [ -n "$shortid" ]; then
   UPLOAD_DATA="$UPLOAD_DATA\n$reality_url"
 elif [ -n "$REAL_PORT" ] && [ -z "$shortid" ]; then
   realitytcp_url="vless://${UUID}@${MYIP}:${REAL_PORT}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&type=tcp&headerType=none#${country_abbreviation}-${SUB_NAME}-realitytcp"
-  realitygprc_url="vless://${UUID}@${MYIP}:${REAL_PORT}?security=reality&sni=${SNI}&fp=chrome&pbk=${PublicKey}&type=grpc&serviceName=grpc&encryption=none#${country_abbreviation}-${SUB_NAME}-realitygrpc"
-  UPLOAD_DATA="$UPLOAD_DATA\n$realitytcp_url\n$realitygprc_url"
+  UPLOAD_DATA="$UPLOAD_DATA\n$reality_url"
 fi
 
 export UPLOAD_DATA
