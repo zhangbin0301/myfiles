@@ -28,5 +28,5 @@ fi
 
 upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
 
-sleep 100
+sleep 300
 done
