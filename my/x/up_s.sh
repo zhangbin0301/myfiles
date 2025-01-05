@@ -49,9 +49,9 @@ else
 
   general_upload_data
   upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
-  # echo "upload ok!"
 
   sleep 300
   done
   fi
 fi
+# echo "upload ok!"
