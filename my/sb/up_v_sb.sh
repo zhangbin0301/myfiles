@@ -59,6 +59,6 @@ if source /root/env.yml; then
   upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
   # echo "upload ok!"
 
-  sleep 100
+  sleep 300
   done
 fi
