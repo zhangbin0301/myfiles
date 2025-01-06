@@ -40,6 +40,9 @@ upload_url_data() {
 if [ -n "$ARGO_DOMAIN" ] && [ -n "$ARGO_AUTH" ]; then
   general_upload_data
   upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
+elif [ -n "$MY_DOMAIN" ]; then
+  general_upload_data
+  upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
 else
   while true
   do
