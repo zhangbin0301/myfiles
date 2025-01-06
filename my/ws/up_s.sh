@@ -1,7 +1,11 @@
 #!/bin/bash
 
-while true
-do
+general_upload_data() {
+  ws_url="vless://${UUID}@${CF_IP}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2F&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#${country_abbreviation}-${SUB_NAME}"
+  UPLOAD_DATA="$ws_url"
+  export UPLOAD_DATA
+  # echo -e "${UPLOAD_DATA}"
+}
 
 upload_url_data() {
   if [ $# -lt 3 ]; then
@@ -21,16 +25,25 @@ upload_url_data() {
   fi
 }
 
-if [ -z "$ARGO_AUTH" ] && [ -z "$ARGO_DOMAIN" ]; then
+if [ -n "$ARGO_DOMAIN" ] && [ -n "$ARGO_AUTH" ]; then
+  general_upload_data
+  upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
+elif [ -n "$MY_DOMAIN" ]; then
+  general_upload_data
+  upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
+else
+  while true
+  do
+
   [ -s ${FILE_PATH}/boot.log ] && export ARGO_DOMAIN=$(cat ${FILE_PATH}/boot.log | grep -o "info.*https://.*trycloudflare.com" | sed "s@.*https://@@g" | tail -n 1)
   # [ -s ${FILE_PATH}/boot.log ] && export ARGO_DOMAIN=$(cat ${FILE_PATH}/boot.log | grep -o "https://.*trycloudflare.com" | tail -n 1 | sed 's/https:\/\///')
+
+  general_upload_data
+  upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
+
+  sleep 300
+  done
+  fi
 fi
 
-export UPLOAD_DATA="vless://${UUID}@${CF_IP}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2F&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#${country_abbreviation}-${SUB_NAME}"
-# export UPLOAD_DATA="vless://${UUID}@${ARGO_DOMAIN}:${CFPORT}?host=${ARGO_DOMAIN}&path=%2F&type=ws&encryption=none&security=tls&sni=${ARGO_DOMAIN}#${country_abbreviation}-${SUB_NAME}"
-
-upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
-# echo "upload ok !"
-
-sleep 300
-done
+# echo "upload ok!"
