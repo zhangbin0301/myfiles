@@ -51,7 +51,7 @@ else
 
   upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
 
-  sleep 300
+  sleep 100
   done
   fi
 fi
