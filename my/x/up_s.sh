@@ -37,7 +37,7 @@ upload_url_data() {
   fi
 }
 
-if [ -n "$ARGO_DOMAIN" ] && [ -n "$ARGO_AUTH" ]; then
+if [ ! -s "${FILE_PATH}/boot.log" ]; then
   general_upload_data
   upload_url_data "${SUB_URL}" "${SUB_NAME}" "${UPLOAD_DATA}"
 elif [ -n "$MY_DOMAIN" ]; then
