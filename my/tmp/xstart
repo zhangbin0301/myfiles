@@ -475,7 +475,7 @@ install_xray() {
   createfolder
   cleanup_files
   initialize_downloads
-  get_ip_country_code
+  getipandisp()
   my_config
   run_processes
 }
