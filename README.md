@@ -4,4 +4,4 @@ SUB_NAME=xxx SUB_URL=xxxx UUID=xxxx V_PORT=8001 ARGO_DOMAIN=xxx ARGO_AUTH=xxx NE
 
 
 
-[https://github.com/mytcgd/myfiles/tree/main/my/tmp](https://raw.githubusercontent.com/mytcgd/myfiles/refs/heads/main/my/tmp/xstart )
+https://raw.githubusercontent.com/mytcgd/myfiles/refs/heads/main/my/tmp/xstart   这是一键临时xray
