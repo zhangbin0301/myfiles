@@ -341,64 +341,89 @@ run_processes() {
   fi
 }
 
-# 声明一个辅助函数，用于调用 API 并解析结果
-fetch_and_parse() {
-    local url="$1"
-    local json_key="$2" # "ip" for (ip.sb/Worker), "query" for ip-api.com
+# ============================
+#  获取 IP + ISP + 国家 Emoji
+# ============================
 
-    IP_INFO=$(curl -s "$url")
+get_ip_info() {
+    local url parser_ip parser_country parser_org json
 
-    # 检查是否成功获取到 IP 地址的键
-    if echo "$IP_INFO" | grep -q "\"${json_key}\""; then
-        if [[ "$json_key" == "ip" ]]; then
-            # 针对 ip.sb 和 Worker API
-            ISP_NAME=$(echo "$IP_INFO" | sed -n 's/.*"isp": *"\([^"]*\).*/\1/p' | sed -e 's/[ ,\.]/_/g; s/__*/_/g; s/^_//; s/_$//')
-
-            # 解析 Worker 或 ip.sb 的 'country_code'
-            COUNTRY_CODE=$(echo "$IP_INFO" | sed -n 's/.*"country_code": *"\([^"]*\).*/\1/p')
-        else
-            # 针对 ip-api.com
-            ISP_NAME=$(echo "$IP_INFO" | sed -n 's/.*"isp": *"\([^"]*\).*/\1/p' | sed -e 's/[ ,\.]/_/g; s/__*/_/g; s/^_//; s/_$//')
-            COUNTRY_CODE=$(echo "$IP_INFO" | sed -n 's/.*"countryCode": *"\([^"]*\).*/\1/p')
-        fi
-
-        # 检查是否成功提取了所有关键信息
-        if [[ -n "$ISP_NAME" && -n "$COUNTRY_CODE" ]]; then
-            export ISP="${COUNTRY_CODE}-${ISP_NAME}"
-            return 0 # 成功
-        fi
+    # 1. ip.sb
+    url="https://api.ip.sb/geoip"
+    json=$(curl -s --max-time 5 "$url")
+    if [[ -n "$json" && "$json" == *"ip"* ]]; then
+        MYIP=$(echo "$json" | sed -n 's/.*"ip": *"\([^"]*\).*/\1/p')
+        COUNTRY_CODE=$(echo "$json" | sed -n 's/.*"country_code": *"\([^"]*\).*/\1/p')
+        ISP_NAME=$(echo "$json" | sed -n 's/.*"isp": *"\([^"]*\).*/\1/p')
+        [[ -n "$MYIP" ]] && return 0
     fi
-    return 1 # 失败
+
+    # 2. ip-api.com
+    url="http://ip-api.com/json/"
+    json=$(curl -s --max-time 5 "$url")
+    if [[ -n "$json" && "$json" == *"query"* ]]; then
+        MYIP=$(echo "$json" | sed -n 's/.*"query": *"\([^"]*\).*/\1/p')
+        COUNTRY_CODE=$(echo "$json" | sed -n 's/.*"countryCode": *"\([^"]*\).*/\1/p')
+        ISP_NAME=$(echo "$json" | sed -n 's/.*"isp": *"\([^"]*\).*/\1/p')
+        [[ -n "$MYIP" ]] && return 0
+    fi
+
+    return 1
 }
 
-# 获取IP及国家代码
-get_ip_country_code() {
-    local API_STATUS=1
+# ============================
+#  获取国家 Emoji（Promise.any 等价）
+# ============================
 
-    # 1. 尝试 https://api.ip.sb/geoip
-    if fetch_and_parse "https://api.ip.sb/geoip" "ip"; then
-        API_STATUS=0
+get_country_emoji() {
+    local emoji="🇺🇳 联合国"
+    local text=""
 
-    # 2. 如果第一个也失败，尝试 http://ip-api.com/json
-    elif fetch_and_parse "http://ip-api.com/json" "query"; then
-        API_STATUS=0
-
-    # 3. 如果第二个失败，尝试您的 Worker URL
-    elif [[ -n "$MYIP_URL" ]] && fetch_and_parse "${MYIP_URL}" "ip"; then
-        API_STATUS=0
+    # 尝试两个服务，任意一个成功就用
+    text=$(curl -s --max-time 5 https://ipconfig.de5.net)
+    if [[ -z "$text" ]]; then
+        text=$(curl -s --max-time 5 https://emoji.dpdns.org/)
     fi
 
-    # 检查是否从任何 API 成功获取数据
-    if [[ "$API_STATUS" -eq 0 ]]; then
-        purple "本机的ISP: ${ISP}"
-        return 0
-    else
-        # 所有 API 都失败了
-        export ISP="UN"
-        purple "本机的ISP: ${ISP}"
+    [[ -n "$text" ]] && emoji=$(echo "$text" | tr -d '\n' | sed 's/ *$//')
+
+    COUNTRY_EMOJI="$emoji"
+}
+
+# ============================
+#  主函数（完全等价 JS getipandisp）
+# ============================
+
+getipandisp() {
+    MYIP=""
+    ISP_NAME=""
+    COUNTRY_CODE=""
+    COUNTRY_EMOJI=""
+
+    if ! get_ip_info; then
+        ISP="🇺🇳 联合国_UnknownISP"
+        MYIP="Unknown"
+        echo "[IP查询失败] ISP=$ISP, IP=$MYIP"
         return 1
     fi
+
+    # 获取 Emoji
+    get_country_emoji
+
+    # 清理 ISP 名称
+    ISP_CLEAN=$(echo "$ISP_NAME" | sed -e 's/[ ,\.]/_/g; s/__*/_/g; s/^_//; s/_$//')
+
+    # IPv6 包装
+    if [[ "$MYIP" == *:* ]]; then
+        MYIP="[$MYIP]"
+    fi
+
+    ISP="${COUNTRY_EMOJI}_${ISP_CLEAN}"
+
+    echo "[IP查询成功] ISP: $ISP, IP: $MYIP"
+    return 0
 }
+
 
 # check_hostname
 check_hostname_change() {
