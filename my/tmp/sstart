@@ -479,9 +479,12 @@ keep_alive() {
 }
 
 run_processes() {
-  argo_randomness=tmp$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 3)
-  web_randomness=tmp$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 3)
-  npm_randomness=tmp$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 3)
+  argo_randomness=tmp$(dd if=/dev/urandom bs=1 count=100 2>/dev/null | tr -dc 'A-Za-z0-9' | head -c 3)
+  web_randomness=tmp$(dd if=/dev/urandom bs=1 count=100 2>/dev/null | tr -dc 'A-Za-z0-9' | head -c 3)
+  npm_randomness=tmp$(dd if=/dev/urandom bs=1 count=100 2>/dev/null | tr -dc 'A-Za-z0-9' | head -c 3)
+  # argo_randomness=tmp$(tr -dc 'A-Za-z0-9' </dev/urandom 2>/dev/null | head -c 3)
+  # web_randomness=tmp$(tr -dc 'A-Za-z0-9' </dev/urandom 2>/dev/null | head -c 3)
+  # npm_randomness=tmp$(tr -dc 'A-Za-z0-9' </dev/urandom 2>/dev/null | head -c 3)
 
   if [ ${OPENSERVER} = "1" ] && [ -n "${V_PORT}" ] && [ -e "${FILE_PATH}/argo" ]; then
     mv ${FILE_PATH}/argo ${FILE_PATH}/${argo_randomness} && sleep 1
