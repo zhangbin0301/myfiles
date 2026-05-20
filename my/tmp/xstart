@@ -173,7 +173,7 @@ protocol: http2
 
 ingress:
   - hostname: ${ARGO_DOMAIN}
-    service: http://localhost: ${V_PORT}
+    service: http://localhost:${V_PORT}
     originRequest:
       noTLSVerify: true
   - service: http_status:404
@@ -475,7 +475,7 @@ install_xray() {
   createfolder
   cleanup_files
   initialize_downloads
-  getipandisp()
+  getipandisp
   my_config
   run_processes
 }
@@ -491,7 +491,7 @@ remove_xray() {
 menu(){
 yellow "1、安装xray_argo临时节点"
 yellow " "
-yellow "2、御载xray_argo临时节点"
+yellow "2、卸载xray_argo临时节点"
 yellow " "
 yellow "0、退出脚本"
 yellow " "
