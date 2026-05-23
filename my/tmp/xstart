@@ -14,7 +14,7 @@ export CFPORT=${CFPORT:-'443'}
 export CF_IP=${CF_IP:-'ip.sb'}
 export FILE_PATH=${FILE_PATH:-'./.tmp'}
 export KEEPALIVE=${KEEPALIVE:-'1'}
-export V_PORT=${V_PORT:-'8080'}
+export V_PORT=${V_PORT:-'8000'}
 export VLESS_WSPATH=${VLESS_WSPATH:-'startvl'}
 
 export SUB_URL=${SUB_URL:-''}
